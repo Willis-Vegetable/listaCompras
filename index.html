@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Compras</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0a192f;
+            color: #ccd6f6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #64ffda;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+
+        .input-container {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        #itemInput {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 2px solid #1e2a47;
+            border-radius: 4px 0 0 4px;
+            background-color: #172a45;
+            color: #ccd6f6;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        #itemInput:focus {
+            border-color: #64ffda;
+        }
+
+        #addButton {
+            padding: 12px 20px;
+            background-color: #1e2a47;
+            color: #64ffda;
+            border: 2px solid #1e2a47;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        #addButton:hover {
+            background-color: #64ffda;
+            color: #0a192f;
+        }
+
+        #listaCompras {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background-color: #172a45;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .item:hover {
+            background-color: #1e2a47;
+        }
+
+        .item-text {
+            flex-grow: 1;
+            margin: 0 10px;
+        }
+
+        .move-up,
+        .move-down,
+        .delete {
+            background-color: transparent;
+            border: none;
+            color: #ccd6f6;
+            cursor: pointer;
+            padding: 5px 8px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .move-up:hover {
+            color: #64ffda;
+            background-color: rgba(100, 255, 218, 0.1);
+        }
+
+        .move-down:hover {
+            color: #64ffda;
+            background-color: rgba(100, 255, 218, 0.1);
+        }
+
+        .delete:hover {
+            color: #ff5555;
+            background-color: rgba(255, 85, 85, 0.1);
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #8892b0;
+            font-size: 0.9rem;
+            border-top: 1px solid #1e2a47;
+            padding-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .input-container {
+                flex-direction: column;
+            }
+
+            #itemInput {
+                border-radius: 4px;
+                margin-bottom: 10px;
+            }
+
+            #addButton {
+                border-radius: 4px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Lista de Compras</h1>
+
+    <div class="input-container">
+        <input type="text" id="itemInput" placeholder="Digite um item...">
+        <button id="addButton">Adicionar</button>
+    </div>
+
+    <ul id="listaCompras"></ul>
+
+    <footer>
+        Willis Rech de Moraes<br>
+        Instituto Federal Catarinense Campus Sombrio<br>
+        2025
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const itemInput = document.getElementById('itemInput');
+            const addButton = document.getElementById('addButton');
+            const listaCompras = document.getElementById('listaCompras');
+
+            // Carrega itens do LocalStorage
+            carregarItens();
+
+            // Adiciona item quando o botão é clicado
+            addButton.addEventListener('click', adicionarItem);
+
+            // Adiciona item quando Enter é pressionado
+            itemInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    adicionarItem();
+                }
+            });
+
+            function adicionarItem() {
+                const textoItem = itemInput.value.trim();
+                if (textoItem !== '') {
+                    criarItem(textoItem);
+                    itemInput.value = '';
+                    itemInput.focus();
+                    salvarItens();
+                }
+            }
+
+            function criarItem(texto) {
+                const li = document.createElement('li');
+                li.className = 'item';
+
+                const upButton = document.createElement('button');
+                upButton.className = 'move-up';
+                upButton.innerHTML = '↑';
+                upButton.addEventListener('click', function () {
+                    const prev = li.previousElementSibling;
+                    if (prev) {
+                        listaCompras.insertBefore(li, prev);
+                        salvarItens();
+                    }
+                });
+
+                const downButton = document.createElement('button');
+                downButton.className = 'move-down';
+                downButton.innerHTML = '↓';
+                downButton.addEventListener('click', function () {
+                    const next = li.nextElementSibling;
+                    if (next) {
+                        listaCompras.insertBefore(next, li);
+                        salvarItens();
+                    }
+                });
+
+                const span = document.createElement('span');
+                span.className = 'item-text';
+                span.textContent = texto;
+
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'delete';
+                deleteButton.innerHTML = '×';
+                deleteButton.addEventListener('click', function () {
+                    li.remove();
+                    salvarItens();
+                });
+
+                li.appendChild(upButton);
+                li.appendChild(downButton);
+                li.appendChild(span);
+                li.appendChild(deleteButton);
+
+                listaCompras.appendChild(li);
+            }
+
+            function salvarItens() {
+                const itens = [];
+                document.querySelectorAll('#listaCompras .item-text').forEach(function (item) {
+                    itens.push(item.textContent);
+                });
+                localStorage.setItem('listaCompras', JSON.stringify(itens));
+            }
+
+            function carregarItens() {
+                const itensSalvos = localStorage.getItem('listaCompras');
+                if (itensSalvos) {
+                    JSON.parse(itensSalvos).forEach(function (item) {
+                        criarItem(item);
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
