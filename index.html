@@ -19,7 +19,7 @@
             color: #64ffda;
             text-align: center;
             margin-bottom: 30px;
-            font-size: 2.5rem;
+            font-size: 2.5em;
         }
 
         .input-container {
@@ -28,13 +28,13 @@
         }
 
         #itemInput {
-            flex-grow: 1;
+            flex: 1;
             padding: 12px 15px;
             border: 2px solid #1e2a47;
-            border-radius: 4px 0 0 4px;
+            border-radius: 25px 0 0 25px;
             background-color: #172a45;
             color: #ccd6f6;
-            font-size: 1rem;
+            font-size: 16px;
             outline: none;
         }
 
@@ -46,8 +46,8 @@
             padding: 12px 20px;
             background-color: #1e2a47;
             color: #64ffda;
-            border: 2px solid #1e2a47;
-            border-radius: 0 4px 4px 0;
+            border: none;
+            border-radius: 0 25px 25px 0;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s ease;
@@ -65,80 +65,138 @@
 
         .item {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            padding: 12px 15px;
-            margin-bottom: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
             background-color: #172a45;
-            border-radius: 4px;
+            border-left: 4px solid #64ffda;
+            border-radius: 15px;
             transition: all 0.3s ease;
         }
 
         .item:hover {
             background-color: #1e2a47;
+            transform: translateX(5px);
         }
 
-        .item-text {
-            flex-grow: 1;
-            margin: 0 10px;
-        }
-
-        .move-up,
-        .move-down,
-        .delete {
-            background-color: transparent;
+        .deleteButton {
+            background-color: #ff4d4d;
+            color: white;
             border: none;
-            color: #ccd6f6;
+            border-radius: 15px;
+            padding: 8px 15px;
             cursor: pointer;
-            padding: 5px 8px;
-            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .deleteButton:hover {
+            background-color: #ff1a1a;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .action-button {
+            padding: 10px 15px;
+            background-color: #1e2a47;
+            color: #64ffda;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
             transition: all 0.3s ease;
-            font-size: 1rem;
+            flex: 1;
+            min-width: 120px;
         }
 
-        .move-up:hover {
+        .action-button:hover {
+            background-color: #64ffda;
+            color: #0a192f;
+        }
+
+        .slot-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .slot-container {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .load-slot {
+            background-color: #1e2a47;
             color: #64ffda;
-            background-color: rgba(100, 255, 218, 0.1);
+            border: 2px solid #64ffda;
+            border-radius: 25px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
         }
 
-        .move-down:hover {
-            color: #64ffda;
-            background-color: rgba(100, 255, 218, 0.1);
+        .load-slot:hover {
+            background-color: #64ffda;
+            color: #0a192f;
         }
 
-        .delete:hover {
-            color: #ff5555;
-            background-color: rgba(255, 85, 85, 0.1);
+        .load-slot.active {
+            background-color: #64ffda;
+            color: #0a192f;
         }
 
         footer {
-            margin-top: 40px;
+            margin-top: 50px;
             text-align: center;
-            color: #8892b0;
-            font-size: 0.9rem;
+            padding: 20px;
             border-top: 1px solid #1e2a47;
-            padding-top: 20px;
+            color: #8892b0;
+            font-size: 14px;
         }
 
-        @media (max-width: 600px) {
-            body {
-                padding: 15px;
+        /* Estilo para a mensagem do pão */
+        .explosao-mensagem {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ff4d4d;
+            color: white;
+            padding: 20px 40px;
+            border-radius: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            z-index: 1000;
+            animation: explode 1s ease-out;
+            display: none;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(-50%, -50%) scale(0.1);
+                opacity: 0;
             }
 
-            h1 {
-                font-size: 2rem;
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
             }
 
-            .input-container {
-                flex-direction: column;
-            }
-
-            #itemInput {
-                border-radius: 4px;
-                margin-bottom: 10px;
-            }
-
-            #addButton {
-                border-radius: 4px;
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
             }
         }
     </style>
@@ -152,12 +210,32 @@
         <button id="addButton">Adicionar</button>
     </div>
 
+    <div class="action-buttons">
+        <button id="clearAll" class="action-button">Apagar Todos</button>
+        <button id="reverseList" class="action-button">Inverter Lista</button>
+    </div>
+
     <ul id="listaCompras"></ul>
 
+    <div class="slot-buttons">
+        <div class="slot-container">
+            <button class="load-slot active" data-slot="1">Slot 1</button>
+        </div>
+        <div class="slot-container">
+            <button class="load-slot" data-slot="2">Slot 2</button>
+        </div>
+        <div class="slot-container">
+            <button class="load-slot" data-slot="3">Slot 3</button>
+        </div>
+        <div class="slot-container">
+            <button class="load-slot" data-slot="4">Slot 4</button>
+        </div>
+    </div>
+
+    <div id="explosaoMensagem" class="explosao-mensagem">O pão explodiu!</div>
+
     <footer>
-        Willis Rech de Moraes<br>
-        Instituto Federal Catarinense Campus Sombrio<br>
-        2025
+        Willis Rech de Moraes | Instituto Federal Catarinense Campus Sombrio | 2025
     </footer>
 
     <script>
@@ -165,91 +243,178 @@
             const itemInput = document.getElementById('itemInput');
             const addButton = document.getElementById('addButton');
             const listaCompras = document.getElementById('listaCompras');
+            const clearAllButton = document.getElementById('clearAll');
+            const reverseListButton = document.getElementById('reverseList');
+            const loadSlotButtons = document.querySelectorAll('.load-slot');
+            const explosaoMensagem = document.getElementById('explosaoMensagem');
 
-            // Carrega itens do LocalStorage
-            carregarItens();
+            let currentSlot = 1; // Slot padrão
 
-            // Adiciona item quando o botão é clicado
+            // Carregar itens do LocalStorage (slot 1 inicialmente)
+            carregarItens(currentSlot);
+
+            // Event listener para adicionar item (botão ou Enter)
+            // Verifica se o item é "pão" e ativa a explosão se for
             addButton.addEventListener('click', adicionarItem);
-
-            // Adiciona item quando Enter é pressionado
             itemInput.addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') {
                     adicionarItem();
                 }
             });
 
+            // Event listener para apagar todos os itens
+            // Pede confirmação antes de limpar a lista
+            clearAllButton.addEventListener('click', function () {
+                if (confirm('Tem certeza que deseja apagar todos os itens?')) {
+                    listaCompras.innerHTML = '';
+                    salvarItens(currentSlot);
+                }
+            });
+
+            // Event listener para inverter a ordem da lista
+            // Reorganiza os itens na ordem inversa
+            reverseListButton.addEventListener('click', function () {
+                const items = Array.from(listaCompras.children);
+                listaCompras.innerHTML = '';
+                items.reverse().forEach(item => listaCompras.appendChild(item));
+                salvarItens(currentSlot);
+            });
+
+            // Event listeners para os botões de slot
+            // Carrega os itens do slot selecionado e atualiza o botão ativo
+            loadSlotButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const slot = this.getAttribute('data-slot');
+                    if (slot != currentSlot) {
+                        currentSlot = slot;
+                        carregarItens(slot);
+                        updateActiveSlotButton();
+                    }
+                });
+            });
+
             function adicionarItem() {
-                const textoItem = itemInput.value.trim();
-                if (textoItem !== '') {
-                    criarItem(textoItem);
+                const itemTexto = itemInput.value.trim();
+                if (itemTexto !== '') {
+                    // Verifica se é "pão seguro" para criar um pão normal
+                    if (itemTexto.toLowerCase() === 'pão seguro') {
+                        // Cria um item normal chamado "pão"
+                        const item = document.createElement('li');
+                        item.className = 'item';
+
+                        const itemSpan = document.createElement('span');
+                        itemSpan.textContent = 'pão'; // Coloca em minúsculo para padronizar
+
+                        const deleteButton = document.createElement('button');
+                        deleteButton.className = 'deleteButton';
+                        deleteButton.textContent = 'Excluir';
+                        deleteButton.addEventListener('click', function () {
+                            item.remove();
+                            salvarItens(currentSlot);
+                        });
+
+                        item.appendChild(itemSpan);
+                        item.appendChild(deleteButton);
+
+                        listaCompras.appendChild(item);
+
+                        // Limpar input
+                        itemInput.value = '';
+
+                        // Salvar automaticamente no slot atual
+                        salvarItens(currentSlot);
+                        return;
+                    }
+
+                    // Easter egg: se o item for "pão", explode a lista
+                    if (itemTexto.toLowerCase() === 'pão') {
+                        listaCompras.innerHTML = '';
+                        salvarItens(currentSlot);
+
+                        // Mostra mensagem de explosão
+                        explosaoMensagem.style.display = 'block';
+                        setTimeout(() => {
+                            explosaoMensagem.style.display = 'none';
+                        }, 2000);
+
+                        itemInput.value = '';
+                        return;
+                    }
+
+                    // Criar elemento do item normal
+                    const item = document.createElement('li');
+                    item.className = 'item';
+
+                    const itemSpan = document.createElement('span');
+                    itemSpan.textContent = itemTexto;
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.className = 'deleteButton';
+                    deleteButton.textContent = 'Excluir';
+                    deleteButton.addEventListener('click', function () {
+                        item.remove();
+                        salvarItens(currentSlot);
+                    });
+
+                    item.appendChild(itemSpan);
+                    item.appendChild(deleteButton);
+
+                    listaCompras.appendChild(item);
+
+                    // Limpar input
                     itemInput.value = '';
-                    itemInput.focus();
-                    salvarItens();
+
+                    // Salvar automaticamente no slot atual
+                    salvarItens(currentSlot);
                 }
             }
 
-            function criarItem(texto) {
-                const li = document.createElement('li');
-                li.className = 'item';
-
-                const upButton = document.createElement('button');
-                upButton.className = 'move-up';
-                upButton.innerHTML = '↑';
-                upButton.addEventListener('click', function () {
-                    const prev = li.previousElementSibling;
-                    if (prev) {
-                        listaCompras.insertBefore(li, prev);
-                        salvarItens();
-                    }
-                });
-
-                const downButton = document.createElement('button');
-                downButton.className = 'move-down';
-                downButton.innerHTML = '↓';
-                downButton.addEventListener('click', function () {
-                    const next = li.nextElementSibling;
-                    if (next) {
-                        listaCompras.insertBefore(next, li);
-                        salvarItens();
-                    }
-                });
-
-                const span = document.createElement('span');
-                span.className = 'item-text';
-                span.textContent = texto;
-
-                const deleteButton = document.createElement('button');
-                deleteButton.className = 'delete';
-                deleteButton.innerHTML = '×';
-                deleteButton.addEventListener('click', function () {
-                    li.remove();
-                    salvarItens();
-                });
-
-                li.appendChild(upButton);
-                li.appendChild(downButton);
-                li.appendChild(span);
-                li.appendChild(deleteButton);
-
-                listaCompras.appendChild(li);
-            }
-
-            function salvarItens() {
+            function salvarItens(slot) {
                 const itens = [];
-                document.querySelectorAll('#listaCompras .item-text').forEach(function (item) {
+                document.querySelectorAll('#listaCompras .item span').forEach(function (item) {
                     itens.push(item.textContent);
                 });
-                localStorage.setItem('listaCompras', JSON.stringify(itens));
+                localStorage.setItem(`listaCompras_slot_${slot}`, JSON.stringify(itens));
             }
 
-            function carregarItens() {
-                const itensSalvos = localStorage.getItem('listaCompras');
+            function carregarItens(slot) {
+                const itensSalvos = localStorage.getItem(`listaCompras_slot_${slot}`);
+                listaCompras.innerHTML = '';
+
                 if (itensSalvos) {
-                    JSON.parse(itensSalvos).forEach(function (item) {
-                        criarItem(item);
+                    JSON.parse(itensSalvos).forEach(function (itemTexto) {
+                        const item = document.createElement('li');
+                        item.className = 'item';
+
+                        const itemSpan = document.createElement('span');
+                        itemSpan.textContent = itemTexto;
+
+                        const deleteButton = document.createElement('button');
+                        deleteButton.className = 'deleteButton';
+                        deleteButton.textContent = 'Excluir';
+                        deleteButton.addEventListener('click', function () {
+                            item.remove();
+                            salvarItens(currentSlot);
+                        });
+
+                        item.appendChild(itemSpan);
+                        item.appendChild(deleteButton);
+
+                        listaCompras.appendChild(item);
                     });
                 }
+
+                updateActiveSlotButton();
+            }
+
+            function updateActiveSlotButton() {
+                loadSlotButtons.forEach(button => {
+                    if (button.getAttribute('data-slot') === currentSlot.toString()) {
+                        button.classList.add('active');
+                    } else {
+                        button.classList.remove('active');
+                    }
+                });
             }
         });
     </script>
