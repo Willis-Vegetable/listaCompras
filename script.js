@@ -13,6 +13,15 @@ document.addEventListener('DOMContentLoaded', function () {
     let clickCount = 0;
     const clickCountElement = document.getElementById('clickCount');
 
+    // Função para decrementar o contador
+    function decrementClickCounter() {
+        clickCount--;
+        clickCountElement.textContent = clickCount;
+        // Salva no localStorage
+        localStorage.setItem('totalClicks', clickCount);
+    }
+    document.getElementById("clicklesser").addEventListener('click', decrementClickCounter); 
+
     // Função para incrementar o contador
     function incrementClickCounter() {
         clickCount++;
@@ -20,8 +29,10 @@ document.addEventListener('DOMContentLoaded', function () {
         // Salva no localStorage
         localStorage.setItem('totalClicks', clickCount);
     }
+    document.getElementById("clickcounter").addEventListener('click', incrementClickCounter); 
 
-    // Event listener para cliques em qualquer elemento clicável
+
+    /* // Event listener para cliques em qualquer elemento clicável
     document.addEventListener('click', function(event) {
         // Verifica se o elemento clicado é clicável (botões, links, inputs, etc.)
         if (event.target.tagName === 'BUTTON' || 
@@ -30,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
             event.target.isContentEditable) {
             incrementClickCounter();
         }
-    });
+    }); */
 
     // Carrega o contador salvo ao iniciar
     if (localStorage.getItem('totalClicks')) {
